@@ -16,6 +16,12 @@
                         {{ __('Dashboard') }}
                     </flux:sidebar.item>
                 </flux:sidebar.group>
+
+                <flux:sidebar.group :heading="__('Master Data')" class="grid">
+                    <flux:sidebar.item icon="list-bullet" :href="route('amenities.index')" :current="request()->routeIs('amenities.index')" wire:navigate>
+                        {{ __('Amenities') }}
+                    </flux:sidebar.item>
+                </flux:sidebar.group>
             </flux:sidebar.nav>
 
             <flux:spacer />
