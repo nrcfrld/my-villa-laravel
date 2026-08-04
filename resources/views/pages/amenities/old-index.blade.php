@@ -8,10 +8,12 @@
             </flux:button>
         </div>
 
-        {{-- TODO : 2. Show Success Alert --}}
 
-        <flux:toast position="bottom right" />
-
+        @if (session('success'))
+            <div class="px-3 py-2 rounded-lg bg-green-100 text-green-600">
+                {{ session('success') }}
+            </div>
+        @endif
 
         <flux:table :paginate="$data">
             <flux:table.columns>
@@ -26,8 +28,19 @@
                     <flux:table.row>
                         <flux:table.cell> {{  $amenity->id }} </flux:table.cell>
                         <flux:table.cell> {{  $amenity->name }} </flux:table.cell>
-                        {{-- TODO : 1. Error Handling Display Dynamic Icons --}}
-                        <flux:table.cell> {{  $amenity->icon_key }} <flux:icon class="inline" name="{{  $amenity->icon_key }}"  /> </flux:table.cell>
+                        <flux:table.cell>
+                            {{ $amenity->icon_key }}
+                            @php
+                                $isValid = Flux::componentExists('icon.' . $amenity->icon_key);
+                            @endphp
+
+                            @if ($isValid)
+                                <flux:icon class="inline" icon="{{ $amenity->icon_key }}" />
+
+                            @else
+                                <span class="text-red-500">Invalid Icon Key</span>
+                            @endif
+                        </flux:table.cell>
                         <flux:table.cell>
                             <flux:button href="{{ route('amenities.edit', $amenity->id) }}" size="sm">
                                 <flux:icon.pencil class="size-4" />
